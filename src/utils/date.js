@@ -236,6 +236,12 @@
 
         mask = fecha.masks[mask] || mask || fecha.masks['default'];
 
+        /** workaround for timezones **/
+        var tz_offset = new Date().getTimezoneOffset();
+        if (tz_offset > 0) {
+            dateObj.setTime( dateObj.getTime() + (1 * 86400000) );
+        }
+
         return mask.replace(token, function ($0) {
             return $0 in formatFlags ? formatFlags[$0](dateObj, i18n) : $0.slice(1, $0.length - 1);
         });
