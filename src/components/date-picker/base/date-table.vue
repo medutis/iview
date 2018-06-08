@@ -64,7 +64,7 @@
             cells () {
                 const tableYear = this.tableDate.getFullYear();
                 const tableMonth = this.tableDate.getMonth();
-                const today = clearHours(new Date());    // timestamp of today
+                var today = clearHours(new Date());    // timestamp of today
                 const selectedDays = this.dates.filter(Boolean).map(clearHours);    // timestamp of selected days
                 const [minDay, maxDay] = this.dates.map(clearHours);
                 const rangeStart = this.rangeState.from && clearHours(this.rangeState.from);
@@ -72,6 +72,12 @@
 
                 const isRange = this.selectionMode === 'range';
                 const disabledTestFn = typeof this.disabledDate === 'function' && this.disabledDate;
+
+                // hackai for timezones
+                var tz_offset = new Date().getTimezoneOffset();
+                if (tz_offset > 0) {
+                    today -= 1 * 86400000;
+                }
 
                 return this.calendar(tableYear, tableMonth, (cell) => {
                     const time = cell.date && clearHours(cell.date);
